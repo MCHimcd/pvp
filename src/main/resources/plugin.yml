@@ -1,0 +1,8 @@
+name: PVP
+version: '${project.version}'
+main: mc.pvp.PVP
+api-version: 1.19
+authors: [SurioZa,Himcd]
+commands:
+  start:
+    description: ""
