@@ -54,15 +54,6 @@ public class MainL implements Listener {
         if (!(e.getEntity() instanceof Player p)) return;
         double taken = e.getDamage();
         p.sendMessage(String.format("§l§6[SYSTEM] §c你此次受到了来自%s造成的%.2f伤害", e.getDamager().getName(),taken));
-//        Location l = p.getLocation();
-//        ArmorStand ar=(ArmorStand) l.getWorld().spawnEntity(l, EntityType.ARMOR_STAND);
-//        ar.customName(Component.text(String.format("§c%.2f",taken)));
-//        //ar.setMarker(true);
-//        //ar.setVisible(false);
-//        ar.setInvisible(true);
-//        ar.setCustomNameVisible(true);
-//        ar.setSilent(true);
-//        PVP.show_damage.put(ar,0);
     }
 
     @EventHandler
