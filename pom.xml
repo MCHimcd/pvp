@@ -6,10 +6,10 @@
 
     <groupId>p</groupId>
     <artifactId>pvp</artifactId>
-    <version>1.0</version>
+    <version>1.0.220831</version>
     <packaging>jar</packaging>
 
-    <name>Pvp</name>
+    <name>PVP</name>
 
     <properties>
         <java.version>1.8</java.version>
