@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import mc.pvp.basic.Menu;
+import mc.pvp.basic.other.Menu;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package mc.pvp.basic.listener;
 
-import mc.pvp.basic.Menu;
+import mc.pvp.basic.other.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;

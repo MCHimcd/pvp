@@ -20,14 +20,11 @@ import java.util.Objects;
 public class PVP extends JavaPlugin {
     public static Scoreboard mainScoreboard;
     public static HashMap<ArmorStand, Integer> show_damage = new HashMap<>();
+    public static YamlConfiguration config;
 
     @Override
     public void onEnable() {
-        //配置文件
-//        saveDefaultConfig();
-        YamlConfiguration config = (YamlConfiguration) getConfig();
-        List<Map<?, ?>> list = config.getMapList("introduction.class-item.a");
-        getLogger().info((String) list.get(0).get("name"));
+        config = (YamlConfiguration) getConfig();
         //计分板
         mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         for (String[] obj : new String[][]{
@@ -45,19 +42,7 @@ public class PVP extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-
-                //显示血量
-//                for (ArmorStand ar : show_damage.keySet()) {
-//                    int time = show_damage.get(ar);
-//                    if (time > 14) {
-//                        ar.remove();
-//                        show_damage.remove(ar);
-//                        continue;
-//                    }
-//                    show_damage.put(ar, time + 1);
-//                    ar.teleport(ar.getLocation().add(0, 0.2, 0));
-//                }
-//                getLogger().log(Level.CONFIG, String.valueOf(show_damage.size()));
+                // TODO: 2022-8-31
             }
         }.runTaskTimer(this, 0, 1);
         //命令
