@@ -1,9 +1,8 @@
 package mc.pvp.basic.listener;
 
-import mc.pvp.basic.other.Menu;
+import mc.pvp.basic.util.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,10 +30,10 @@ public class MenuL implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e){
         if (menusName.get(e.getPlayer().getOpenInventory().title()) == null) return;
-        HumanEntity p= e.getPlayer();
+        Player p= (Player) e.getPlayer();
         switch (menusName.get(p.getOpenInventory().title())) {
-            case 2->p.openInventory(Menu.aClassMenu0());
-            case 3->p.openInventory(Menu.dClassMenu0());
+            case 2->p.openInventory(Menu.aClassMenu(p));
+            case 3->p.openInventory(Menu.dClassMenu(p));
         }
     }
 }

@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -50,34 +50,47 @@ public class MainL implements Listener {
     }
 
     @EventHandler
-    public void hurt(EntityDamageByEntityEvent e) {
+    public void onHurt(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player p)) return;
         double taken = e.getDamage();
-        p.sendMessage(String.format("§l§6[SYSTEM] §c你此次受到了来自%s造成的%.2f伤害", e.getDamager().getName(),taken));
+        p.sendMessage(String.format("§l§6[SYSTEM] §c你此次受到了来自%s造成的%.2f伤害", e.getDamager().getName(), taken));
     }
 
     @EventHandler
     public void onCraft(CraftItemEvent e) {
         e.setCancelled(true);
     }
+
     private void addScore(Player p, String obj, int s) {
         Score score = Objects.requireNonNull(main_scoreboard.getObjective(obj)).getScore(p);
         score.setScore(score.getScore() + s);
     }
 
     @EventHandler
-    public void onItemMove(InventoryMoveItemEvent e){
-        if(!e.getSource().equals(e.getDestination())&&e.getItem().getItemMeta().getCustomModelData()==11111111) e.setCancelled(true);
+    public void onItemMove(InventoryMoveItemEvent e) {
+        if (!e.getSource().equals(e.getDestination()) && e.getItem().getItemMeta().getCustomModelData() == 11111111)
+            e.setCancelled(true);
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent e){
-        if(e.getItemDrop().getItemStack().getItemMeta().getCustomModelData()==11111111) e.setCancelled(true);
+    public void onItemDrop(PlayerDropItemEvent e) {
+        if (e.getItemDrop().getItemStack().getItemMeta().getCustomModelData() == 11111111) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onUseCommand(PlayerCommandPreprocessEvent e){
+//        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        Player p=e.getPlayer();
+        for(String tag:new String[]{"ready"}) p.removeScoreboardTag(tag);
     }
 
     private void damage(Player p, double n) {
         if (n <= 0) return;
-        hurt(new EntityDamageByEntityEvent(p,p, EntityDamageEvent.DamageCause.VOID, n));
+        onHurt(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.VOID, n));
         p.setHealth(p.getHealth() - n);
         if (n > p.getHealth()) {
             p.setHealth(0);
@@ -87,7 +100,7 @@ public class MainL implements Listener {
     private void heal(Player p, double n) {
         if (n <= 0) return;
         double max = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
-        if (p.getHealth()+n > max) {
+        if (p.getHealth() + n > max) {
             p.setHealth(max);
             return;
         }

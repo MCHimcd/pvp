@@ -1,9 +1,10 @@
-package mc.pvp.basic.other;
+package mc.pvp.basic.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,23 +51,23 @@ public class Menu {
     }
 
 
-    public static Inventory aClassMenu0() {
+    public static Inventory aClassMenu(Player p) {
         Inventory m = Bukkit.createInventory(null, 9, Component.text("进攻方职业菜单", TextColor.color(255, 2, 0)));
-        for (IntroItem i:aClasses()) {
+        for (IntroItem i:aClasses(p)) {
             m.addItem(i.getItem());
         }
         return m;
     }
 
-    public static Inventory dClassMenu0() {
+    public static Inventory dClassMenu(Player p) {
         Inventory m = Bukkit.createInventory(null, 9, Component.text("防守方职业菜单", TextColor.color(6, 255, 237)));
-        for (IntroItem i:dClasses()) {
+        for (IntroItem i:dClasses(p)) {
             m.addItem(i.getItem());
         }
         return m;
     }
 
-    private static List<IntroItem> aClasses(){
+    private static List<IntroItem> aClasses(Player p){
         List<IntroItem> items=new ArrayList<>();
         for(int i=1;i<2;++i){
             String name= config.getString("class-item.a.%d.name".formatted(i));
@@ -76,7 +77,7 @@ public class Menu {
         }
         return items;
     }
-    private static List<IntroItem> dClasses(){
+    private static List<IntroItem> dClasses(Player p){
         List<IntroItem> items=new ArrayList<>();
         for(int i=1;i<2;++i){
             String name= config.getString("class-item.d.%d.name".formatted(i));
