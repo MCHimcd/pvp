@@ -1,12 +1,13 @@
 package mc.pvp.basic.commands;
 
+import mc.pvp.basic.util.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import mc.pvp.basic.other.Menu;
+import mc.pvp.basic.util.Menu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,17 +29,21 @@ public class Start implements CommandExecutor {
             joinD(ps.get(0));
             ps.remove(0);
         }
+        Game.reset();
+        Game.chooing=true;
         return true;
     }
 
     private void joinA(Player p) {
         Objects.requireNonNull(mainScoreboard.getTeam("A")).addEntity(p);
-        p.openInventory(Menu.aClassMenu0());
+        p.addScoreboardTag("choosing");
+        p.openInventory(Menu.aClassMenu(p));
     }
 
     private void joinD(Player p) {
         Objects.requireNonNull(mainScoreboard.getTeam("D")).addEntity(p);
-        p.openInventory(Menu.dClassMenu0());
+        p.addScoreboardTag("choosing");
+        p.openInventory(Menu.dClassMenu(p));
     }
 
 }
