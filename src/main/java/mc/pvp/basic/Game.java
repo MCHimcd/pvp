@@ -1,8 +1,10 @@
-package mc.pvp.basic.util;
+package mc.pvp.basic;
 
+import mc.pvp.PVP;
 import org.bukkit.*;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
+import org.bukkit.entity.Player;
 import org.bukkit.structure.StructureManager;
 
 import java.util.Objects;
@@ -33,13 +35,20 @@ public class Game {
         beacon = new Location(main_world, x, y, z);
         main_world.getBlockAt(beacon).setType(Material.BEACON);
     }
+
     //进攻赢
-    public static void endA(){
-
+    public static void endA() {
+        reset();
     }
-    //防守赢
-    public static void endD(){
 
+    //防守赢
+    public static void endD() {
+        reset();
+    }
+
+    public static void resetPlayer(Player p){
+        for (String tag : new String[]{"ready"}) p.removeScoreboardTag(tag);
+        PVP.mainScoreboard.getTeams().forEach(team -> team.removePlayer(p));
     }
 
     private static void loadMap(int i) {

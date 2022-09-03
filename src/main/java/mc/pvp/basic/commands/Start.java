@@ -1,6 +1,6 @@
 package mc.pvp.basic.commands;
 
-import mc.pvp.basic.util.Game;
+import mc.pvp.basic.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

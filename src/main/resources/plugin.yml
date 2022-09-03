@@ -3,7 +3,7 @@ version: '${project.version}'
 main: mc.pvp.PVP
 api-version: 1.19
 authors: [SurioZa,Himcd]
-website: pvp.120324.xyz
+website: 120324.xyz
 commands:
   start:
     description: ""

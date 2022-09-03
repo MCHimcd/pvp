@@ -1,7 +1,7 @@
 package mc.pvp.basic.listener;
 
 import mc.pvp.PVP;
-import mc.pvp.basic.util.Game;
+import mc.pvp.basic.Game;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
