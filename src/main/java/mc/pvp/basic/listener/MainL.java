@@ -1,11 +1,13 @@
 package mc.pvp.basic.listener;
 
-import mc.pvp.basic.Game;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,7 +17,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -80,10 +83,6 @@ public class MainL implements Listener {
 //        e.setCancelled(true);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        Game.resetPlayer(e.getPlayer());
-    }
 
     private void damage(Player p, double n) {
         if (n <= 0) return;

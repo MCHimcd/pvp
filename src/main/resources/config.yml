@@ -1,6 +1,6 @@
 class-item:
   a:
-    1:
+    10000000:
       item: diamond
       name: "Mike"
       lore:
@@ -16,7 +16,7 @@ class-item:
         - "§6冷却：  15s ， 次数：3"
         - "§l§2-------------------------"
   d:
-    1:
+    20000000:
       item: diamond
       name: "§6Shrek"
       lore:

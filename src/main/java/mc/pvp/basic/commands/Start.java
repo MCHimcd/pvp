@@ -30,7 +30,7 @@ public class Start implements CommandExecutor {
             ps.remove(0);
         }
         Game.reset();
-        Game.chooing=true;
+        Game.choosing =true;
         return true;
     }
 
@@ -38,12 +38,14 @@ public class Start implements CommandExecutor {
         Objects.requireNonNull(mainScoreboard.getTeam("A")).addEntity(p);
         p.addScoreboardTag("choosing");
         p.openInventory(Menu.aClassMenu(p));
+        Game.players.add(p);
     }
 
     private void joinD(Player p) {
         Objects.requireNonNull(mainScoreboard.getTeam("D")).addEntity(p);
         p.addScoreboardTag("choosing");
         p.openInventory(Menu.dClassMenu(p));
+        Game.players.add(p);
     }
 
 }
