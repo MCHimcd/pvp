@@ -52,7 +52,11 @@ public class MainL implements Listener {
         killer.sendMessage(Component.translatable(killerMes.get((int) (Math.random() * killerMes.size())), dead.displayName()));
         addScore(killer, "money", 10);
         addScore(killer, "killplayer", 1);
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(killMes.get((int) (Math.random() * killMes.size()))));
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(getRandomItemOfList(killMes)));
+    }
+
+    private static <T> T getRandomItemOfList(List<T> list){
+        return list.get((int)(Math.random()*list.size()));
     }
 
     @EventHandler
