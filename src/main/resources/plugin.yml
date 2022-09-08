@@ -6,4 +6,5 @@ authors: [SurioZa,Himcd]
 website: 120324.xyz
 commands:
   start:
-    description: ""
+    description: "start game"
+    usage: "/start"

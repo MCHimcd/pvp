@@ -7,6 +7,7 @@ import mc.pvp.basic.listener.MenuL;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -42,7 +43,6 @@ public class PVP extends JavaPlugin {
             if (mainScoreboard.getObjective(obj.get(0)) == null)
                 mainScoreboard.registerNewObjective(obj.get(0), Criteria.DUMMY, Component.text(obj.get(1)));
         });
-
         //队伍
         if (mainScoreboard.getTeam("A") == null) {
             a = mainScoreboard.registerNewTeam("A");
@@ -64,7 +64,6 @@ public class PVP extends JavaPlugin {
                 new MainL(),
                 new MenuL(),
                 new GameL()
-        })
-            pm.registerEvents(l, this);
+        }) pm.registerEvents(l, this);
     }
 }

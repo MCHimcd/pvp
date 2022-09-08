@@ -3,11 +3,8 @@ package mc.pvp.basic.listener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -17,8 +14,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -28,6 +23,10 @@ import java.util.Objects;
 
 public class MainL implements Listener {
     Scoreboard main_scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
+    private static <T> T getRandomItemOfList(List<T> list) {
+        return list.get((int) (Math.random() * list.size()));
+    }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
@@ -54,10 +53,6 @@ public class MainL implements Listener {
         addScore(killer, "kill_player", 1);
         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(getRandomItemOfList(killMes)));
 
-    }
-
-    private static <T> T getRandomItemOfList(List<T> list){
-        return list.get((int)(Math.random()*list.size()));
     }
 
     @EventHandler

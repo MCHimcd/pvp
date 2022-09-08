@@ -19,7 +19,7 @@ import java.util.HashMap;
 import static mc.pvp.basic.Game.*;
 
 public class MenuL implements Listener {
-    private final HashMap<Component, Integer> menusName = new HashMap<>() {
+    private final HashMap<Component, Integer> menuNames = new HashMap<>() {
         {
             put(Component.text("主菜单", TextColor.color(186, 255, 148)), 1);
             put(Component.text("进攻方职业菜单", TextColor.color(255, 2, 0)), 2);
@@ -29,9 +29,9 @@ public class MenuL implements Listener {
 
     @EventHandler
     //职业菜单
-    public void onClickClassInv(InventoryClickEvent e) {
+    public void onClickClassMenu(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (menusName.get(p.getOpenInventory().title()) == null) return;
+        if (menuNames.get(p.getOpenInventory().title()) == null) return;
         if (e.getRawSlot() < 0) return;
         ItemStack i = e.getCurrentItem();
         if (i == null) return;
@@ -43,30 +43,30 @@ public class MenuL implements Listener {
         chosen_class.remove(Integer.valueOf(getClassID(p)));
         chosen_class.add(item);
         setClassID(p,item);
-        if (PVP.a.hasPlayer(p)) players.stream().filter(player -> PVP.a.hasPlayer(p)).forEach(this::updateInv);
-        if (PVP.d.hasPlayer(p)) players.stream().filter(player -> PVP.d.hasPlayer(p)).forEach(this::updateInv);
+        if (PVP.a.hasPlayer(p)) players.stream().filter(player -> PVP.a.hasPlayer(p)).forEach(this::updateInventory);
+        if (PVP.d.hasPlayer(p)) players.stream().filter(player -> PVP.d.hasPlayer(p)).forEach(this::updateInventory);
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
-        if (menusName.get(e.getPlayer().getOpenInventory().title()) == null) return;
+        if (menuNames.get(e.getPlayer().getOpenInventory().title()) == null) return;
         Player p = (Player) e.getPlayer();
-        if (PVP.a.hasPlayer(p)) reopen(p, 2);
-        if (PVP.d.hasPlayer(p)) reopen(p, 3);
+        if (PVP.a.hasPlayer(p)) reopenInventory(p, 2);
+        if (PVP.d.hasPlayer(p)) reopenInventory(p, 3);
     }
 
-    private void reopen(Player p, int menu) {
+    private void reopenInventory(Player p, int menu) {
         if (menu != 0)
-            menu = menusName.get(p.getOpenInventory().title());
+            menu = menuNames.get(p.getOpenInventory().title());
         p.getOpenInventory().close();
         switch (menu) {
             case 2 -> p.openInventory(Menu.aClassMenu(p));
             case 3 -> p.openInventory(Menu.dClassMenu(p));
         }
-        updateInv(p);
+        updateInventory(p);
     }
 
-    private void updateInv(Player p) {
+    private void updateInventory(Player p) {
         Inventory inv = (Inventory) p.getOpenInventory();
         for (ItemStack i : inv.getContents()) {
             assert i != null;
