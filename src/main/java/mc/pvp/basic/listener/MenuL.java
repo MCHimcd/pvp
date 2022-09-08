@@ -5,6 +5,7 @@ import mc.pvp.basic.util.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,10 +15,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
-import static mc.pvp.basic.Game.chosen_class;
-import static mc.pvp.basic.Game.players;
+import static mc.pvp.basic.Game.*;
 
 public class MenuL implements Listener {
     private final HashMap<Component, Integer> menusName = new HashMap<>() {
@@ -41,14 +40,9 @@ public class MenuL implements Listener {
         if (!i.getItemMeta().hasCustomModelData()) return;
         int item = i.getItemMeta().getCustomModelData();
         if (chosen_class.contains(item)) return;
-        p.getScoreboardTags().stream()
-                .filter(tag-> Pattern.matches("chosen-\\d+",tag))
-                .forEach(tag->{
-                    chosen_class.remove(Integer.valueOf(tag.substring(7)));
-                    p.removeScoreboardTag(tag);
-                });
+        chosen_class.remove(Integer.valueOf(getClassID(p)));
         chosen_class.add(item);
-        p.addScoreboardTag("chosen-%d".formatted(item));
+        setClassID(p,item);
         if (PVP.a.hasPlayer(p)) players.stream().filter(player -> PVP.a.hasPlayer(p)).forEach(this::updateInv);
         if (PVP.d.hasPlayer(p)) players.stream().filter(player -> PVP.d.hasPlayer(p)).forEach(this::updateInv);
     }
@@ -69,17 +63,17 @@ public class MenuL implements Listener {
             case 2 -> p.openInventory(Menu.aClassMenu(p));
             case 3 -> p.openInventory(Menu.dClassMenu(p));
         }
+        updateInv(p);
     }
 
     private void updateInv(Player p) {
         Inventory inv = (Inventory) p.getOpenInventory();
         for (ItemStack i : inv.getContents()) {
             assert i != null;
-            if (chosen_class.contains(i.getItemMeta().getCustomModelData())) i.setType(Material.BARRIER);
-//            if(p.getScoreboardTags().stream()
-//                    .filter(tag -> Pattern.matches("chosen-\\d+", tag)).forEach(s -> {
-//                        if (chosen_class.contains(Integer.valueOf(s.substring(7)))) // TODO: 2022-9-5
-//                    }))
+            int item=i.getItemMeta().getCustomModelData();
+            if (chosen_class.contains(item)) i.setType(Material.BARRIER);
+            if (getClassID(p)==item) i.addEnchantment(Enchantment.CHANNELING,0);
+            else if(i.getEnchantments().containsKey(Enchantment.CHANNELING)) i.removeEnchantment(Enchantment.CHANNELING);
         }
     }
 }

@@ -51,8 +51,9 @@ public class MainL implements Listener {
         //击杀事件
         killer.sendMessage(Component.translatable(killerMes.get((int) (Math.random() * killerMes.size())), dead.displayName()));
         addScore(killer, "money", 10);
-        addScore(killer, "killplayer", 1);
+        addScore(killer, "kill_player", 1);
         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(getRandomItemOfList(killMes)));
+
     }
 
     private static <T> T getRandomItemOfList(List<T> list){

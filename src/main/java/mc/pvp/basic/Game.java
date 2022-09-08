@@ -13,12 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 public class Game {
-    static {
-        reset();
-    }
     public static World main_world = Bukkit.getWorlds().get(0);
     public static boolean choosing = false;
     public static Location start;
@@ -27,13 +23,17 @@ public class Game {
     public static List<Player> players;
     public static List<Integer> chosen_class;
 
+    static {
+        reset();
+    }
+
     public static void reset() {
         choosing = false;
         start = new Location(main_world, 1000, 0, 1000);
         end = new Location(main_world, 1000, 0, 1000);
         beacon = new Location(main_world, 1000, 0, 1000);
-        players=new ArrayList<>();
-        chosen_class=new ArrayList<>();
+        players = new ArrayList<>();
+        chosen_class = new ArrayList<>();
     }
 
     public static void start() {
@@ -62,12 +62,18 @@ public class Game {
         reset();
     }
 
+    public static int getClassID(Player p) {
+        return Objects.requireNonNull(PVP.mainScoreboard.getObjective("class_id")).getScore(p).getScore();
+    }
+
+    public static void setClassID(Player p, int id){
+        Objects.requireNonNull(PVP.mainScoreboard.getObjective("class_id")).getScore(p).setScore(id);
+    }
+
     public static void resetPlayer(Player p) {
         for (String tag : new String[]{"ready"}) p.removeScoreboardTag(tag);
         PVP.mainScoreboard.getTeams().forEach(team -> team.removePlayer(p));
-        p.getScoreboardTags().stream()
-                .filter(tag-> Pattern.matches("chosen-\\d+",tag))
-                .forEach(p::removeScoreboardTag);
+        Objects.requireNonNull(PVP.mainScoreboard.getObjective("class_id")).getScore(p).setScore(0);
     }
 
     private static void loadMap(int i) {
@@ -83,7 +89,7 @@ public class Game {
                         .filter(player -> Objects.requireNonNull(PVP.mainScoreboard.getTeam("A")).hasPlayer(player))
                         .forEach(player -> {
                             player.teleport(new Location(main_world, 1048, 255, 1048));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING,Integer.MAX_VALUE,0,true));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, true));
                         });
             }
         }

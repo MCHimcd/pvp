@@ -1,3 +1,9 @@
+scoreboard:
+  - ["money","§6<金币>"]
+  - ["kill_player", "§7<杀敌数>"]
+  - ["death", "§7<死亡数>"]
+  - ["health", "§c<❤>"]
+  - ["class_id",""]
 class-item:
   a:
     10000000:

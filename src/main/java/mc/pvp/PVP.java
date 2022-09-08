@@ -16,6 +16,7 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.List;
 import java.util.Objects;
 
 import static mc.pvp.basic.Game.*;
@@ -37,27 +38,24 @@ public class PVP extends JavaPlugin {
         config = (YamlConfiguration) getConfig();
         //计分板
         mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        for (String[] obj : new String[][]{
-                new String[]{"money", "§6<金币>"},
-                new String[]{"killplayer", "§7<杀敌数>"},
-                new String[]{"death", "§7<死亡数>"},
-                new String[]{"health", "§c<❤>"},
-        })
-            if (mainScoreboard.getObjective(obj[0]) == null)
-                mainScoreboard.registerNewObjective(obj[0], Criteria.DUMMY, Component.text(obj[1]));
+        Objects.requireNonNull(config.getList("scoreboard")).stream().map(arr -> (List<String>) arr).forEach(obj -> {
+            if (mainScoreboard.getObjective(obj.get(0)) == null)
+                mainScoreboard.registerNewObjective(obj.get(0), Criteria.DUMMY, Component.text(obj.get(1)));
+        });
+
         //队伍
         if (mainScoreboard.getTeam("A") == null) {
             a = mainScoreboard.registerNewTeam("A");
             a.setAllowFriendlyFire(false);
             a.color(NamedTextColor.DARK_RED);
             a.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
-        } else a=mainScoreboard.getTeam("A");
+        } else a = mainScoreboard.getTeam("A");
         if (mainScoreboard.getTeam("D") == null) {
             d = mainScoreboard.registerNewTeam("D");
             d.setAllowFriendlyFire(false);
             d.color(NamedTextColor.DARK_BLUE);
             d.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
-        } else d=mainScoreboard.getTeam("D");
+        } else d = mainScoreboard.getTeam("D");
         //命令
         Objects.requireNonNull(getCommand("start")).setExecutor(new Start());
         //事件
