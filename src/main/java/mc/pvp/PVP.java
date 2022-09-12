@@ -1,6 +1,5 @@
 package mc.pvp;
 
-import mc.pvp.basic.Game;
 import mc.pvp.basic.commands.Start;
 import mc.pvp.basic.listener.GameL;
 import mc.pvp.basic.listener.MainL;
@@ -25,6 +24,7 @@ import java.util.logging.Logger;
 import static mc.pvp.basic.Game.*;
 
 public class PVP extends JavaPlugin {
+    public static PVP plugin;
     public static Logger l;
     public static Team a, d;
     public static Scoreboard mainScoreboard;
@@ -51,6 +51,7 @@ public class PVP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
         l = getLogger();
         timer.runTaskTimer(this, 0, 1);
         config = (YamlConfiguration) getConfig();

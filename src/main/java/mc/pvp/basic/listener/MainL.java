@@ -23,6 +23,11 @@ import java.util.Objects;
 
 public class MainL implements Listener {
     Scoreboard main_scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    //击杀者消息列表
+    public static final List<String> killerMes = new ArrayList<>() {{
+        add("§l§6[SYSTEM] §7你击杀了%s奖励你10个金币！");
+    }};
+    //击杀消息列表
 
     private static <T> T getRandomItemOfList(List<T> list) {
         return list.get((int) (Math.random() * list.size()));
@@ -35,18 +40,16 @@ public class MainL implements Listener {
         addScore(dead, "death", 1);
         if (killer == null) return;
         if (killer.equals(dead)) return;
-        //击杀者消息列表
-        List<String> killerMes = new ArrayList<>() {{
-            add("§l§6[SYSTEM] §7你击杀了%s奖励你10个金币！");
-        }};
-        //击杀消息列表
-        List<Component> killMes = new ArrayList<>() {{
+
+
+       List<Component> killMes = new ArrayList<>() {{
             add(Component.translatable("§l§b[SYSTEM] %s§c残忍地把%s§c的头给剁掉了！", killer.displayName().color(TextColor.color(255, 0, 19)), dead.displayName().color(TextColor.color(255, 248, 161))));
             add(Component.translatable("§l§b[SYSTEM] %s§c§c将%s§c击杀了,尸骨无存！", killer.displayName().color(TextColor.color(255, 0, 19)), dead.displayName().color(TextColor.color(255, 248, 161))));
             add(Component.translatable("§l§b[SYSTEM] %s§c被%s§c杀害！§7真可怜", dead.displayName().color(TextColor.color(255, 248, 161)), killer.displayName().color(TextColor.color(255, 0, 19))));
             add(Component.translatable("§l§b[SYSTEM] %s§c被惨无人道的杀害了！凶手是%s.", dead.displayName().color(TextColor.color(255, 248, 161)), killer.displayName().color(TextColor.color(255, 0, 19))));
             add(Component.translatable("§l§b[SYSTEM] %s§c was crushed by %s", dead.displayName().color(TextColor.color(255, 248, 161)), killer.displayName().color(TextColor.color(255, 0, 19))));
         }};
+
         //击杀事件
         killer.sendMessage(Component.translatable(killerMes.get((int) (Math.random() * killerMes.size())), dead.displayName()));
         addScore(killer, "money", 10);

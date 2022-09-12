@@ -36,7 +36,7 @@ public class Start implements CommandExecutor {
             public void run() {
                 Game.players.forEach(player -> player.addScoreboardTag("ready"));
             }
-        }.runTaskLater(Bukkit.getPluginManager().getPlugin("pvp"), 2);
+        }.runTaskLater(plugin, 2);
         return true;
     }
 

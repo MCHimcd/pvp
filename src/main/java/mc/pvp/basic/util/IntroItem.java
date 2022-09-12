@@ -16,6 +16,7 @@ public class IntroItem {
     boolean e;
     String name, item;
     List<String> lore;
+    ItemStack thisItemStack;
 
     public IntroItem(String name, List<String> lore, String item, int id, boolean e) {
         this.name = name;
@@ -24,16 +25,18 @@ public class IntroItem {
         this.id = id;
         this.e = e;
     }
-
-    public ItemStack getItem() {
-        ItemStack i = new ItemStack(Objects.requireNonNull(Material.getMaterial(item)));
-        i.editMeta(itemMeta -> {
+    {
+        thisItemStack = new ItemStack(Objects.requireNonNull(Material.getMaterial(item)));
+        thisItemStack.editMeta(itemMeta -> {
             itemMeta.displayName(Component.text(name));
             itemMeta.lore(lore.stream().map(Component::text).collect(Collectors.toList()));
             itemMeta.setCustomModelData(id);
             if (e) itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         });
-        return i;
+    }
+
+    public ItemStack getItem() {
+        return thisItemStack;
     }
 }
