@@ -1,6 +1,7 @@
 package mc.pvp.basic.listener;
 
 import mc.pvp.PVP;
+import mc.pvp.basic.Game;
 import mc.pvp.basic.util.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -43,12 +44,14 @@ public class MenuL implements Listener {
         chosen_class.remove(Integer.valueOf(getClassID(p)));
         chosen_class.add(item);
         setClassID(p,item);
+        p.addScoreboardTag("ready");
         if (PVP.a.hasPlayer(p)) players.stream().filter(player -> PVP.a.hasPlayer(p)).forEach(this::updateInventory);
         if (PVP.d.hasPlayer(p)) players.stream().filter(player -> PVP.d.hasPlayer(p)).forEach(this::updateInventory);
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
+        if(!choosing) return;
         if (menuNames.get(e.getPlayer().getOpenInventory().title()) == null) return;
         Player p = (Player) e.getPlayer();
         if (PVP.a.hasPlayer(p)) reopenInventory(p, 2);
