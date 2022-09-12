@@ -79,9 +79,7 @@ public class Menu {
                 String item = config.getString("class-item.a.%d.item".formatted(i));
                 if (Game.chosen_class.contains(i)) item = "minecraft:barrier";
                 List<String> lore = (List<String>) config.getList("class-item.a.%d.lore".formatted(i));
-                items.add(new IntroItem(name, lore, item, i,
-                        p.getScoreboardTags().stream()
-                                .filter(tag -> Pattern.matches("chosen-\\d+", tag)).map(s -> Integer.valueOf(s.substring(7))).anyMatch(i0 -> i0.equals(finalI))));
+                items.add(new IntroItem(name, lore, item, i, false));
             }
         }
         return items;
@@ -96,9 +94,7 @@ public class Menu {
                 String item = config.getString("class-item.d.%d.item".formatted(i));
                 if (Game.chosen_class.contains(i)) item = "minecraft:barrier";
                 List<String> lore = (List<String>) config.getList("class-item.d.%d.lore".formatted(i));
-                items.add(new IntroItem(name, lore, item, i,
-                        p.getScoreboardTags().stream()
-                                .filter(tag -> Pattern.matches("chosen-\\d+", tag)).map(s -> Integer.valueOf(s.substring(7))).anyMatch(i0 -> i0.equals(finalI))));
+                items.add(new IntroItem(name, lore, item, i, false));
             }
         }
         return items;
