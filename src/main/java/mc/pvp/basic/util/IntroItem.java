@@ -12,31 +12,38 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class IntroItem {
-    int id;
-    boolean e;
-    String name, item;
-    List<String> lore;
-    ItemStack thisItemStack;
-
-    public IntroItem(String name, List<String> lore, String item, int id, boolean e) {
-        this.name = name;
-        this.lore = new ArrayList<>(lore);
-        this.item = item;
-        this.id = id;
-        this.e = e;
-    }
-    {
-        thisItemStack = new ItemStack(Objects.requireNonNull(Material.getMaterial(item)));
-        thisItemStack.editMeta(itemMeta -> {
-            itemMeta.displayName(Component.text(name));
-            itemMeta.lore(lore.stream().map(Component::text).collect(Collectors.toList()));
-            itemMeta.setCustomModelData(id);
-            if (e) itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-        });
-    }
-
-    public ItemStack getItem() {
-        return thisItemStack;
+    public static ItemStack getItem(int id) {
+        ItemStack item;
+        List<Component> lore=new ArrayList<>();
+        switch (id) {
+            /*
+            进攻方
+             */
+            case 10000000->{
+                item=new ItemStack(Material.DIAMOND);
+                item.editMeta(itemMeta -> {
+                    itemMeta.displayName(Component.text("库奇"));
+                    lore.add(Component.text("test"));
+                    itemMeta.lore(lore);
+                    itemMeta.setCustomModelData(id);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_ATTRIBUTES);
+                });
+            }
+            /*
+            防守方
+             */
+            case 20000000->{
+                item=new ItemStack(Material.DIAMOND);
+                item.editMeta(itemMeta -> {
+                    itemMeta.displayName(Component.text("帕奇"));
+                    lore.add(Component.text("test2"));
+                    itemMeta.lore(lore);
+                    itemMeta.setCustomModelData(id);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_ATTRIBUTES);
+                });
+            }
+            default -> item=new ItemStack(Material.AIR);
+        }
+        return item;
     }
 }

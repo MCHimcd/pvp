@@ -3,6 +3,8 @@ package mc.pvp;
 import mc.pvp.basic.commands.Start;
 import mc.pvp.basic.listener.GameL;
 import mc.pvp.basic.listener.MainL;
+import mc.pvp.basic.listener.MenuL;
+import mc.pvp.basic.util.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -55,12 +57,28 @@ public class PVP extends JavaPlugin {
         l = getLogger();
         timer.runTaskTimer(this, 0, 1);
         config = (YamlConfiguration) getConfig();
-        //计分板
+        //命令
+        Objects.requireNonNull(getCommand("start")).setExecutor(new Start());
+        //事件
+        PluginManager pm = Bukkit.getPluginManager();
+        for (Listener l : new Listener[]{
+                new MainL(),
+                new MenuL(),
+                new GameL()
+        })
+            pm.registerEvents(l, this);
+        /*计分板
         mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        Objects.requireNonNull(config.getList("scoreboard")).stream().map(arr -> (List<String>) arr).forEach(obj -> {
-            if (mainScoreboard.getObjective(obj.get(0)) == null)
-                mainScoreboard.registerNewObjective(obj.get(0), Criteria.DUMMY, Component.text(obj.get(1)));
-        });
+        for(String[] obj:new String[][]{
+                new String[]{"money","§6<金币>"},
+                new String[]{"kill_player", "§7<杀敌数>"},
+                new String[]{"death", "§7<死亡数>"},
+                new String[]{"health", "§c<❤>"},
+                new String[]{"class_id",""}
+        }){
+            if (mainScoreboard.getObjective(obj[0]) == null)
+                mainScoreboard.registerNewObjective(obj[0], Criteria.DUMMY, Component.text(obj[1]));
+        };
         //队伍
         if (mainScoreboard.getTeam("A") == null) {
             a = mainScoreboard.registerNewTeam("A");
@@ -74,15 +92,6 @@ public class PVP extends JavaPlugin {
             d.color(NamedTextColor.DARK_BLUE);
             d.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
         } else d = mainScoreboard.getTeam("D");
-        //命令
-        Objects.requireNonNull(getCommand("start")).setExecutor(new Start());
-        //事件
-        PluginManager pm = Bukkit.getPluginManager();
-        for (Listener l : new Listener[]{
-                new MainL(),
-//                new MenuL(),
-                new GameL()
-        })
-            pm.registerEvents(l, this);
+        */
     }
 }

@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainL implements Listener {
-    Scoreboard main_scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
     //击杀者消息列表
     public static final List<String> killerMes = new ArrayList<>() {{
         add("§l§6[SYSTEM] §7你击杀了%s奖励你10个金币！");
     }};
+    Scoreboard main_scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
     //击杀消息列表
 
     private static <T> T getRandomItemOfList(List<T> list) {
@@ -42,7 +42,7 @@ public class MainL implements Listener {
         if (killer.equals(dead)) return;
 
 
-       List<Component> killMes = new ArrayList<>() {{
+        List<Component> killMes = new ArrayList<>() {{
             add(Component.translatable("§l§b[SYSTEM] %s§c残忍地把%s§c的头给剁掉了！", killer.displayName().color(TextColor.color(255, 0, 19)), dead.displayName().color(TextColor.color(255, 248, 161))));
             add(Component.translatable("§l§b[SYSTEM] %s§c§c将%s§c击杀了,尸骨无存！", killer.displayName().color(TextColor.color(255, 0, 19)), dead.displayName().color(TextColor.color(255, 248, 161))));
             add(Component.translatable("§l§b[SYSTEM] %s§c被%s§c杀害！§7真可怜", dead.displayName().color(TextColor.color(255, 248, 161)), killer.displayName().color(TextColor.color(255, 0, 19))));
@@ -72,8 +72,7 @@ public class MainL implements Listener {
 
     @EventHandler
     public void onItemMove(InventoryMoveItemEvent e) {
-        if (!e.getSource().equals(e.getDestination()) && e.getItem().getItemMeta().getCustomModelData() == 11111111)
-            e.setCancelled(true);
+        if (!e.getSource().equals(e.getDestination())) e.setCancelled(true);
     }
 
     @EventHandler

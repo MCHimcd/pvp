@@ -31,25 +31,17 @@ public class Start implements CommandExecutor {
             ps.remove(0);
         }
         Game.choosing =true;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Game.players.forEach(player -> player.addScoreboardTag("ready"));
-            }
-        }.runTaskLater(plugin, 2);
         return true;
     }
 
     private void joinA(Player p) {
         a.addEntity(p);
-        p.addScoreboardTag("choosing");
         p.openInventory(Menu.aClassMenu(p));
         Game.players.add(p);
     }
 
     private void joinD(Player p) {
         d.addEntity(p);
-        p.addScoreboardTag("choosing");
         p.openInventory(Menu.dClassMenu(p));
         Game.players.add(p);
     }
