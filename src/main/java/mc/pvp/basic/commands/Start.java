@@ -7,14 +7,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static mc.pvp.PVP.*;
+import static mc.pvp.PVP.attackers;
+import static mc.pvp.PVP.defenders;
 
 public class Start implements CommandExecutor {
     @Override
@@ -26,22 +26,21 @@ public class Start implements CommandExecutor {
         while (!ps.isEmpty()) {
             joinA(ps.get(0));
             ps.remove(0);
-            if (ps.isEmpty()) break;
             joinD(ps.get(0));
             ps.remove(0);
         }
-        Game.choosing =true;
+        Game.choosing = true;
         return true;
     }
 
     private void joinA(Player p) {
-        a.addEntity(p);
+        attackers.addEntity(p);
         p.openInventory(Menu.aClassMenu(p));
         Game.players.add(p);
     }
 
     private void joinD(Player p) {
-        d.addEntity(p);
+        defenders.addEntity(p);
         p.openInventory(Menu.dClassMenu(p));
         Game.players.add(p);
     }

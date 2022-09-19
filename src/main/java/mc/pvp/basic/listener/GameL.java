@@ -30,7 +30,7 @@ public class GameL implements Listener {
     @EventHandler
     public void onBreakBeacon(BlockBreakEvent e) {
         if (!e.getBlock().getLocation().equals(Game.beacon)) return;
-        if (!PVP.a.hasPlayer(e.getPlayer())) {
+        if (!PVP.attackers.hasPlayer(e.getPlayer())) {
             e.setCancelled(true);
             return;
         }
@@ -38,18 +38,18 @@ public class GameL implements Listener {
     }
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent e){
-        Player p=e.getPlayer();
-        if(players.contains(p)){
+    public void onDeath(PlayerDeathEvent e) {
+        Player p = e.getPlayer();
+        if (players.contains(p)) {
             p.setGameMode(GameMode.SPECTATOR);
         }
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
-        Player p=e.getPlayer();
+        Player p = e.getPlayer();
         players.remove(p);
-        time.removePlayer(p);
+        TIME.removePlayer(p);
     }
 
     @EventHandler

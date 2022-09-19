@@ -1,48 +1,41 @@
 package mc.pvp.basic.util;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class IntroItem {
     public static ItemStack getItem(int id) {
-        ItemStack item;
-        List<Component> lore=new ArrayList<>();
+        ItemStack item=new ItemStack(Material.AIR);
+        List<Component> lore = new ArrayList<>();
         switch (id) {
+            case 10000000, 20000000 -> {
+                item.setType(Material.IRON_SWORD);
+                item.editMeta(itemMeta -> {
+                    itemMeta.displayName(Component.text("基础职业", TextColor.color(110, 169, 191)));
+                    lore.add(Component.text(""));
+                    itemMeta.lore(lore);
+                    itemMeta.setCustomModelData(id);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                });
+            }
             /*
             进攻方
              */
-            case 10000000->{
-                item=new ItemStack(Material.DIAMOND);
-                item.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("库奇"));
-                    lore.add(Component.text("test"));
-                    itemMeta.lore(lore);
-                    itemMeta.setCustomModelData(id);
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_ATTRIBUTES);
-                });
+            case 10000001->{
+                // TODO: 2022-9-18
             }
             /*
             防守方
              */
-            case 20000000->{
-                item=new ItemStack(Material.DIAMOND);
-                item.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("帕奇"));
-                    lore.add(Component.text("test2"));
-                    itemMeta.lore(lore);
-                    itemMeta.setCustomModelData(id);
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_ATTRIBUTES);
-                });
+            case 20000001->{
+                // TODO: 2022-9-18
             }
-            default -> item=new ItemStack(Material.AIR);
         }
         return item;
     }

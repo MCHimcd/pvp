@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -77,7 +78,8 @@ public class MainL implements Listener {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
-        if (e.getItemDrop().getItemStack().getItemMeta().getCustomModelData() == 11111111) e.setCancelled(true);
+        ItemMeta meta = e.getItemDrop().getItemStack().getItemMeta();
+        if (meta.hasCustomModelData() && meta.getCustomModelData() == 11111111) e.setCancelled(true);
     }
 
     @EventHandler

@@ -64,14 +64,16 @@ public class Menu {
 
     private static List<ItemStack> aClasses(Player p) {
         List<ItemStack> items = new ArrayList<>();
-        for (int i = 10000000; i < 10000001; ++i)
+        items.add(IntroItem.getItem(10000000));
+        for (int i = 10000001; i < 10000002; ++i)
             if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.getItem(i));
         return items;
     }
 
     private static List<ItemStack> dClasses(Player p) {
         List<ItemStack> items = new ArrayList<>();
-        for (int i = 20000000; i < 20000001; ++i)
+        items.add(IntroItem.getItem(20000000));
+        for (int i = 20000001; i < 20000002; ++i)
             if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.getItem(i));
         return items;
     }

@@ -1,7 +1,6 @@
 package mc.pvp.basic.listener;
 
 import mc.pvp.PVP;
-import mc.pvp.basic.util.Menu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
@@ -13,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
@@ -41,33 +41,39 @@ public class MenuL implements Listener {
         int item = i.getItemMeta().getCustomModelData();
         if (chosen_class.contains(item)) return;
         setClassID(p, item);
+        p.addScoreboardTag("ready");
+        if (PVP.attackers.hasPlayer(p))
+            players.stream().filter(player -> PVP.attackers.hasPlayer(p)).forEach(this::updateInventory);
+        if (PVP.defenders.hasPlayer(p))
+            players.stream().filter(player -> PVP.defenders.hasPlayer(p)).forEach(this::updateInventory);
         if (item == 10000000 || item == 20000000) return;
         chosen_class.remove(Integer.valueOf(getClassID(p)));
         chosen_class.add(item);
-        p.addScoreboardTag("ready");
-        if (PVP.a.hasPlayer(p)) players.stream().filter(player -> PVP.a.hasPlayer(p)).forEach(this::updateInventory);
-        if (PVP.d.hasPlayer(p)) players.stream().filter(player -> PVP.d.hasPlayer(p)).forEach(this::updateInventory);
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         if (!choosing) return;
-        if (menuNames.get(e.getPlayer().getOpenInventory().title()) == null) return;
-        Player p = (Player) e.getPlayer();
-        if (PVP.a.hasPlayer(p)) reopenInventory(p, 2);
-        if (PVP.d.hasPlayer(p)) reopenInventory(p, 3);
+        if (!(e.getPlayer() instanceof Player p)) return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                p.openInventory(e.getInventory());
+            }
+        }.runTaskLater(PVP.plugin, 1);
     }
 
-    private void reopenInventory(Player p, int menu) {
-        Inventory inv = p.getOpenInventory().getInventory(0);
-        if (inv != null) inv.close();
-        if (menu != 0) menu = menuNames.get(p.getOpenInventory().title());
-        switch (menu) {
-            case 2 -> p.openInventory(Menu.aClassMenu(p));
-            case 3 -> p.openInventory(Menu.dClassMenu(p));
-        }
-        updateInventory(p);
-    }
+//
+//    private void reopenInventory(Player p, int menu) {
+//        Inventory inv = p.getOpenInventory().getInventory(0);
+//        if (inv != null) inv.close();
+//        if (menu != 0) menu = menuNames.get(p.getOpenInventory().title());
+//        switch (menu) {
+//            case 2 -> p.openInventory(Menu.aClassMenu(p));
+//            case 3 -> p.openInventory(Menu.dClassMenu(p));
+//        }
+//        updateInventory(p);
+//    }
 
     private void updateInventory(Player p) {
         Inventory inv = p.getOpenInventory().getInventory(0);
