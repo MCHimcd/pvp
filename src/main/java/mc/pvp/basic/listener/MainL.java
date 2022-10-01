@@ -1,5 +1,6 @@
 package mc.pvp.basic.listener;
 
+import mc.pvp.basic.Game;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -11,7 +12,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,27 +61,24 @@ public class MainL implements Listener {
 
     }
 
-    @EventHandler
-    public void hurt(EntityDamageByEntityEvent e) {
-        if (!(e.getEntity() instanceof Player p)) return;
-        double taken = e.getDamage();
-        p.sendMessage(String.format("§l§6[SYSTEM] §c你此次受到了来自%s造成的%.2f伤害", e.getDamager().getName(), taken));
-    }
+
 
     @EventHandler
     public void onCraft(CraftItemEvent e) {
         e.setCancelled(true);
     }
 
+
     @EventHandler
-    public void onItemMove(InventoryMoveItemEvent e) {
-        if (!e.getSource().equals(e.getDestination())) e.setCancelled(true);
+    public void onOpen(InventoryOpenEvent e) {
+        if (Game.players.contains(e.getPlayer()) && e.getInventory().getType() != InventoryType.PLAYER)
+            e.setCancelled(true);
     }
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
         ItemMeta meta = e.getItemDrop().getItemStack().getItemMeta();
-        if (meta.hasCustomModelData() && meta.getCustomModelData() == 11111111) e.setCancelled(true);
+        if (meta.hasCustomModelData() && meta.getCustomModelData() >= 10000000) e.setCancelled(true);
     }
 
     @EventHandler
@@ -90,7 +89,6 @@ public class MainL implements Listener {
 
     private void damage(Player p, double n) {
         if (n <= 0) return;
-        hurt(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.VOID, n));
         p.setHealth(p.getHealth() - n);
         if (n > p.getHealth()) {
             p.setHealth(0);

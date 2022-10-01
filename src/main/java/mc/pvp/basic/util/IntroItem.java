@@ -11,7 +11,7 @@ import java.util.List;
 
 public class IntroItem {
     public static ItemStack getItem(int id) {
-        ItemStack item=new ItemStack(Material.AIR);
+        ItemStack item = new ItemStack(Material.AIR);
         List<Component> lore = new ArrayList<>();
         switch (id) {
             case 10000000, 20000000 -> {
@@ -52,8 +52,25 @@ public class IntroItem {
             /*
             防守方
              */
-            case 20000001->{
-                // TODO: 2022-9-18
+            case 20000001 -> {
+                item.setType(Material.IRON_SWORD);
+                item.editMeta(itemMeta -> {
+                    itemMeta.displayName(Component.text("史瑞克", TextColor.color(255, 0, 19)));
+                    lore.add(Component.text("-----------------", TextColor.color(0, 0, 0)));
+                    lore.add(Component.text("职业类型：近战", TextColor.color(255, 236, 7)));
+                    lore.add(Component.text("职业定位：战士", TextColor.color(255, 236, 7)));
+                    lore.add(Component.text("技能：", TextColor.color(255, 248, 161)));
+                    lore.add(Component.text("①技能：格挡", TextColor.color(255, 0, 249)));
+                    lore.add(Component.text("介绍：史瑞克减少下次受到伤害的80%", TextColor.color(186, 255, 148)));
+                    lore.add(Component.text("作用时间：0.6s 冷却时间：15s ", TextColor.color(186, 255, 148)));
+                    lore.add(Component.text("②技能：原能修复", TextColor.color(255, 0, 249)));
+                    lore.add(Component.text("介绍：史瑞克使用元能加快回复自身和周围友军的血量。", TextColor.color(186, 255, 148)));
+                    lore.add(Component.text("作用半径：5 持续时间：30s", TextColor.color(186, 255, 148)));
+                    lore.add(Component.text("-----------------", TextColor.color(0, 0, 0)));
+                    itemMeta.lore(lore);
+                    itemMeta.setCustomModelData(id);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                });
             }
         }
         return item;

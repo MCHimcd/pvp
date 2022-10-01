@@ -4,6 +4,7 @@ import mc.pvp.basic.commands.Start;
 import mc.pvp.basic.listener.GameL;
 import mc.pvp.basic.listener.MainL;
 import mc.pvp.basic.listener.MenuL;
+import mc.pvp.basic.listener.SkillL;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -35,12 +36,13 @@ public class PVP extends JavaPlugin {
         l = getLogger();
         //命令
         Objects.requireNonNull(getCommand("start")).setExecutor(new Start());
-        //事件
+        //事件监听
         PluginManager pm = Bukkit.getPluginManager();
         for (Listener l : new Listener[]{
                 new MainL(),
                 new MenuL(),
-                new GameL()
+                new GameL(),
+                new SkillL()
         })
             pm.registerEvents(l, this);
         //计分板
@@ -50,7 +52,9 @@ public class PVP extends JavaPlugin {
                 new String[]{"kill_player", "§7<杀敌数>"},
                 new String[]{"death", "§7<死亡数>"},
                 new String[]{"health", "§c<❤>"},
-                new String[]{"class_id", ""}
+                new String[]{"class_id", ""},
+                new String[]{"cd1",""},
+                new String[]{"cd2",""}
         }) {
             if (mainScoreboard.getObjective(obj[0]) == null)
                 mainScoreboard.registerNewObjective(obj[0], Criteria.DUMMY, Component.text(obj[1]));
@@ -72,7 +76,8 @@ public class PVP extends JavaPlugin {
         timer = new BukkitRunnable() {
             @Override
             public void run() {
-                if (choosing && players.stream().allMatch(player -> player.getScoreboardTags().contains("ready"))) start();
+                if (choosing && players.stream().allMatch(player -> player.getScoreboardTags().contains("ready")))
+                    start();
                 if (!players.isEmpty()) {
                     if (players.stream().filter(player -> PVP.attackers.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR))
                         endD();
