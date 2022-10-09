@@ -1,8 +1,7 @@
-package mc.pvp.basic.listener;
+package mc.pvp.event;
 
-import mc.pvp.basic.util.Skill;
+import mc.pvp.util.Skill;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.TitlePart;
@@ -18,8 +17,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
-import static mc.pvp.basic.Game.getClassID;
-import static mc.pvp.basic.Game.players;
+import static mc.pvp.Game.getClassID;
+import static mc.pvp.Game.players;
 
 public class SkillL implements Listener {
 
@@ -31,7 +30,7 @@ public class SkillL implements Listener {
         if (i == null) return;
         if (!i.getItemMeta().hasCustomModelData()) return;
         int id = i.getItemMeta().getCustomModelData() % 10000000;
-        Skill.getSkill(p, getClassID(p), id).execute();
+        Skill.skill(p, getClassID(p), id).execute();
     }
 
     @EventHandler

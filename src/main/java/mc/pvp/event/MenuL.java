@@ -1,4 +1,4 @@
-package mc.pvp.basic.listener;
+package mc.pvp.event;
 
 import mc.pvp.PVP;
 import net.kyori.adventure.text.Component;
@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
-import static mc.pvp.basic.Game.*;
+import static mc.pvp.Game.*;
 
 public class MenuL implements Listener {
     private final HashMap<Component, Integer> menuNames = new HashMap<>() {
@@ -78,7 +78,7 @@ public class MenuL implements Listener {
     private void updateInventory(Player p) {
         Inventory inv = p.getOpenInventory().getInventory(0);
         if (inv == null) return;
-        for (ItemStack i : inv.getContents()) {
+        for (ItemStack i : inv.getStorageContents()) {
             if (i == null) continue;
             int item = i.getItemMeta().getCustomModelData();
             if (getClassID(p) == item) i.addUnsafeEnchantment(Enchantment.CHANNELING, 1);

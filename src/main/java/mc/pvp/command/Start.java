@@ -1,7 +1,7 @@
-package mc.pvp.basic.commands;
+package mc.pvp.command;
 
-import mc.pvp.basic.Game;
-import mc.pvp.basic.util.Menu;
+import mc.pvp.Game;
+import mc.pvp.util.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,8 +19,12 @@ import static mc.pvp.PVP.defenders;
 public class Start implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        Game.reset();
         List<Player> ps = new ArrayList<>(Bukkit.getOnlinePlayers());
+        if (ps.size() == 1) {
+            sender.sendMessage("§l§b[SYSTEM] §4人数不足，无法开始");
+            return true;
+        }
+        Game.reset();
         Collections.shuffle(ps);
         if (ps.size() % 2 != 0) ps.remove(0);
         while (!ps.isEmpty()) {

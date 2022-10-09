@@ -1,10 +1,10 @@
 package mc.pvp;
 
-import mc.pvp.basic.commands.Start;
-import mc.pvp.basic.listener.GameL;
-import mc.pvp.basic.listener.MainL;
-import mc.pvp.basic.listener.MenuL;
-import mc.pvp.basic.listener.SkillL;
+import mc.pvp.command.Start;
+import mc.pvp.event.GameL;
+import mc.pvp.event.MainL;
+import mc.pvp.event.MenuL;
+import mc.pvp.event.SkillL;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static mc.pvp.basic.Game.*;
+import static mc.pvp.Game.*;
 
 public class PVP extends JavaPlugin {
     public static PVP plugin;

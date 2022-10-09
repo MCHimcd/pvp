@@ -1,13 +1,11 @@
-package mc.pvp.basic;
+package mc.pvp;
 
-import mc.pvp.PVP;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.boss.BarColor;
@@ -22,10 +20,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.structure.StructureManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+
+import static mc.pvp.util.EquipmentHelper.*;
 
 public class Game {
     public static final BossBar TIME = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
@@ -59,7 +56,7 @@ public class Game {
         players.forEach(player -> {
             TIME.addPlayer(player);
             player.setGameMode(GameMode.SURVIVAL);
-            giveItems(player);
+            playerInit(player);
         });
     }
 
@@ -117,7 +114,7 @@ public class Game {
         p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
         p.setFoodLevel(20);
         for (PotionEffectType type : PotionEffectType.values()) p.removePotionEffect(type);
-        for (String tag : new String[]{"ready"}) p.removeScoreboardTag(tag);
+        for (String tag : new String[]{"ready", "MikeSkill1"}) p.removeScoreboardTag(tag);
         for (String sc : new String[]{"class_id", "cd1", "cd2"})
             Objects.requireNonNull(PVP.mainScoreboard.getObjective(sc)).getScore(p).setScore(0);
         PVP.mainScoreboard.getTeams().forEach(team -> team.removePlayer(p));
@@ -142,10 +139,11 @@ public class Game {
         }
     }
 
-    private static void giveItems(Player p) {
+    private static void playerInit(Player p) {
         int id = getClassID(p);
         PlayerInventory inv = p.getInventory();
         List<ItemStack> items = new ArrayList<>();
+        int additionalHealth = 20;
         ItemStack[] equipments = new ItemStack[]{
                 new ItemStack(Material.AIR),
                 new ItemStack(Material.AIR),
@@ -167,91 +165,46 @@ public class Game {
             进攻
              */
             case 10000001 -> {
-                ItemStack h = new ItemStack(Material.IRON_HELMET);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("头盔", TextColor.color(255, 94, 114)));
-                    itemMeta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 1, true);
-                });
-                ItemStack c = new ItemStack(Material.IRON_CHESTPLATE);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("铠甲", TextColor.color(255, 94, 114)));
-                    itemMeta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 1, true);
-                    itemMeta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("", 20, AttributeModifier.Operation.ADD_NUMBER));
-                });
-                ItemStack l = new ItemStack(Material.IRON_LEGGINGS);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("护腿", TextColor.color(255, 94, 114)));
-                    itemMeta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 1, true);
-                });
-                ItemStack s = new ItemStack(Material.IRON_BOOTS);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("战靴", TextColor.color(255, 94, 114)));
-                    itemMeta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 1, true);
-                });
-                ItemStack weapon = new ItemStack(Material.IRON_SWORD);
-                weapon.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("迈克的宝剑", TextColor.color(6, 255, 237)));
-                    itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier("", 7, AttributeModifier.Operation.ADD_NUMBER));
-                });
-                ItemStack skill1 = new ItemStack(Material.ARROW);
-                skill1.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("肾上腺素", TextColor.color(105, 230, 255)));
-                    itemMeta.setCustomModelData(10000001);
-                });
-                ItemStack skill2 = new ItemStack(Material.FLINT);
-                skill2.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("致残打击", TextColor.color(255, 0, 19)));
-                    itemMeta.setCustomModelData(10000002);
-                });
+                equipments = armors(
+                        armor(Material.IRON_HELMET, "§c头盔", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_CHESTPLATE, "§c铠甲", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_LEGGINGS, "§c护腿", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_BOOTS, "§c战靴", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }})
 
-                equipments[0] = h;
-                equipments[1] = c;
-                equipments[2] = l;
-                equipments[3] = s;
-                items.add(weapon);
-                items.add(skill1);
-                items.add(skill2);
-
+                );
+                items.add(weapon(Material.IRON_SWORD, 7, -2.4, "§b迈克的宝剑"));
+                items.add(skill(Material.ARROW, "§b肾上腺素", 1));
+                items.add(skill(Material.ARROW, "§c致残打击", 2));
             }
             /*
             防守
              */
             case 20000001 -> {
-                ItemStack h = new ItemStack(Material.IRON_HELMET);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("头盔", TextColor.color(105, 230, 255)));
-                });
-                ItemStack c = new ItemStack(Material.IRON_CHESTPLATE);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("铠甲", TextColor.color(105, 230, 255)));
-                    itemMeta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("", 20, AttributeModifier.Operation.ADD_NUMBER));
-                });
-                ItemStack l = new ItemStack(Material.IRON_LEGGINGS);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("护腿", TextColor.color(105, 230, 255)));
-                });
-                ItemStack s = new ItemStack(Material.IRON_BOOTS);
-                h.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("战靴", TextColor.color(105, 230, 255)));
-                });
-                ItemStack weapon = new ItemStack(Material.IRON_SWORD);
-                weapon.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("史瑞克的断剑", TextColor.color(255, 0, 19)));
-                    itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier("", 7, AttributeModifier.Operation.ADD_NUMBER));
-                    itemMeta.setCustomModelData(10000001);
-                });
-                ItemStack skill1 = new ItemStack(Material.AMETHYST_SHARD);
-                skill1.editMeta(itemMeta -> {
-                    itemMeta.displayName(Component.text("原能修复", TextColor.color(105, 230, 255)));
-                    itemMeta.setCustomModelData(10000002);
-                });
-                equipments[0] = h;
-                equipments[1] = c;
-                equipments[2] = l;
-                equipments[3] = s;
-                items.add(weapon);
-                items.add(skill1);
+                equipments = armors(
+                        armor(Material.IRON_HELMET, "§c头盔", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_CHESTPLATE, "§c铠甲", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_LEGGINGS, "§c护腿", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }}),
+                        armor(Material.IRON_BOOTS, "§c战靴", null, new HashMap<>() {{
+                            put(Enchantment.PROTECTION_PROJECTILE, 1);
+                        }})
 
+                );
+                items.add(weapon(Material.IRON_SWORD, 7, -2.4, "§4史瑞克的断剑", null, null, 1));
+                items.add(skill(Material.AMETHYST_SHARD, "§b原能修复", 2));
             }
         }
         items.forEach(item -> {
@@ -265,5 +218,6 @@ public class Game {
         equipment.setChestplate(equipments[1]);
         equipment.setLeggings(equipments[2]);
         equipment.setBoots(equipments[3]);
+        Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20 + additionalHealth);
     }
 }

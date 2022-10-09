@@ -1,4 +1,4 @@
-package mc.pvp.basic.util;
+package mc.pvp.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IntroItem {
-    public static ItemStack getItem(int id) {
+    public static ItemStack get(int id) {
         ItemStack item = new ItemStack(Material.AIR);
         List<Component> lore = new ArrayList<>();
         switch (id) {

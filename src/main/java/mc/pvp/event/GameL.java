@@ -1,7 +1,7 @@
-package mc.pvp.basic.listener;
+package mc.pvp.event;
 
 import mc.pvp.PVP;
-import mc.pvp.basic.Game;
+import mc.pvp.Game;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static mc.pvp.basic.Game.*;
+import static mc.pvp.Game.*;
 
 public class GameL implements Listener {
     @EventHandler

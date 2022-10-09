@@ -1,4 +1,4 @@
-package mc.pvp.basic.util;
+package mc.pvp.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -64,17 +64,17 @@ public class Menu {
 
     private static List<ItemStack> aClasses(Player p) {
         List<ItemStack> items = new ArrayList<>();
-        items.add(IntroItem.getItem(10000000));
+        items.add(IntroItem.get(10000000));
         for (int i = 10000001; i < 10000002; ++i)
-            if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.getItem(i));
+            if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.get(i));
         return items;
     }
 
     private static List<ItemStack> dClasses(Player p) {
         List<ItemStack> items = new ArrayList<>();
-        items.add(IntroItem.getItem(20000000));
+        items.add(IntroItem.get(20000000));
         for (int i = 20000001; i < 20000002; ++i)
-            if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.getItem(i));
+            if (p.getScoreboardTags().contains("Class-%d".formatted(i))) items.add(IntroItem.get(i));
         return items;
     }
 }

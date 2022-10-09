@@ -1,10 +1,8 @@
-package mc.pvp.basic.util;
+package mc.pvp.util;
 
 import mc.pvp.PVP;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Skill {
-    public static Skill getSkill(Player p, int classId, int skillId) {
+    public static Skill skill(Player p, int classId, int skillId) {
         switch (classId) {
             case 10000001 -> {
                 if (skillId == 1) return new Skill() {

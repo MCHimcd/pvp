@@ -1,6 +1,5 @@
-package mc.pvp.basic.listener;
+package mc.pvp.event;
 
-import mc.pvp.basic.Game;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -8,8 +7,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -23,6 +20,9 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static mc.pvp.Game.choosing;
+import static mc.pvp.Game.players;
 
 public class MainL implements Listener {
     //击杀者消息列表
@@ -62,7 +62,6 @@ public class MainL implements Listener {
     }
 
 
-
     @EventHandler
     public void onCraft(CraftItemEvent e) {
         e.setCancelled(true);
@@ -71,7 +70,7 @@ public class MainL implements Listener {
 
     @EventHandler
     public void onOpen(InventoryOpenEvent e) {
-        if (Game.players.contains(e.getPlayer()) && e.getInventory().getType() != InventoryType.PLAYER)
+        if (players.contains(e.getPlayer()) && !choosing && e.getInventory().getType() != InventoryType.PLAYER)
             e.setCancelled(true);
     }
 
