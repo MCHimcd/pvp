@@ -10,8 +10,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Skill {
-    public static Skill skill(Player p, int classId, int skillId) {
+    private final static Skill EMPTY = new Skill() {
+        @Override
+        public void execute() {
+        }
+    };
+
+    public static Skill get(Player p, int classId, int skillId) {
         switch (classId) {
+            /*
+            进攻
+             */
+            //麦克
             case 10000001 -> {
                 if (skillId == 1) return new Skill() {
                     @Override
@@ -28,16 +38,15 @@ public abstract class Skill {
                     public void execute() {
                         p.removeScoreboardTag("MikeSkill1");
                         p.addScoreboardTag("MikeSkill1");
-                        p.spawnParticle(Particle.FLAME,p.getLocation(),100);
+                        p.spawnParticle(Particle.FLAME, p.getLocation(), 100);
                     }
                 };
-                else return new Skill() {
-                        @Override
-                        public void execute() {
-
-                        }
-                    };
+                else return EMPTY;
             }
+            /*
+            防守
+             */
+            //史瑞克
             case 20000001 -> {
                 if (skillId == 1) return new Skill() {
                     @Override
@@ -45,12 +54,7 @@ public abstract class Skill {
 
                     }
                 };
-                else return new Skill() {
-                    @Override
-                    public void execute() {
-
-                    }
-                };
+                else return EMPTY;
             }
             default -> {
                 return new Skill() {

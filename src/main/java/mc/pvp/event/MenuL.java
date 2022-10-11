@@ -63,29 +63,17 @@ public class MenuL implements Listener {
         }.runTaskLater(PVP.plugin, 1);
     }
 
-//
-//    private void reopenInventory(Player p, int menu) {
-//        Inventory inv = p.getOpenInventory().getInventory(0);
-//        if (inv != null) inv.close();
-//        if (menu != 0) menu = menuNames.get(p.getOpenInventory().title());
-//        switch (menu) {
-//            case 2 -> p.openInventory(Menu.aClassMenu(p));
-//            case 3 -> p.openInventory(Menu.dClassMenu(p));
-//        }
-//        updateInventory(p);
-//    }
-
     private void updateInventory(Player p) {
         Inventory inv = p.getOpenInventory().getInventory(0);
         if (inv == null) return;
         for (ItemStack i : inv.getStorageContents()) {
             if (i == null) continue;
-            int item = i.getItemMeta().getCustomModelData();
-            if (getClassID(p) == item) i.addUnsafeEnchantment(Enchantment.CHANNELING, 1);
+            int id = i.getItemMeta().getCustomModelData();
+            if (getClassID(p) == id) i.addUnsafeEnchantment(Enchantment.CHANNELING, 1);
             else if (i.getEnchantments().containsKey(Enchantment.CHANNELING))
                 i.removeEnchantment(Enchantment.CHANNELING);
-            if (item == 10000000 || item == 20000000) break;
-            if (chosen_class.contains(item) && getClassID(p) != item) i.setType(Material.BARRIER);
+            if (id == 10000000 || id == 20000000) continue;
+            if (chosen_class.contains(id) && getClassID(p) != id) i.setType(Material.BARRIER);
         }
     }
 }
