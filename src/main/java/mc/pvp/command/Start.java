@@ -34,6 +34,7 @@ public class Start implements CommandExecutor {
             ps.remove(0);
         }
         Game.choosing = true;
+        Game.gameTime.setScore(5400);
         return true;
     }
 

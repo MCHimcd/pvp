@@ -16,14 +16,14 @@ public class EquipmentHelper {
         return new ItemStack[]{helmet, chest_plate, leggings, boots};
     }
 
-    public static ItemStack weapon(Material type, double attack_damage, double attack_speed, String name, List<String> lore, Map<Enchantment, Integer> enchantments, int model_data) {
+    public static ItemStack weapon(Material type, double attack_damage, double attack_speed, String name, List<String> lore, Map<Enchantment, Integer> enchantments, boolean model_data) {
         ItemStack r = new ItemStack(type);
         r.editMeta(itemMeta -> {
             if (name != null) itemMeta.displayName(Component.text(name));
             if (lore != null) itemMeta.lore(lore.stream().map(Component::text).collect(Collectors.toList()));
             itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier("", attack_damage, AttributeModifier.Operation.ADD_NUMBER));
             itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier("", attack_speed, AttributeModifier.Operation.ADD_NUMBER));
-            if (model_data != 0) itemMeta.setCustomModelData(model_data);
+            if (model_data) itemMeta.setCustomModelData(0);
             if (enchantments != null)
                 enchantments.forEach((enchantment, integer) -> itemMeta.addEnchant(enchantment, integer, true));
         });
@@ -73,8 +73,8 @@ public class EquipmentHelper {
         return armor(type, name, null);
     }
 
-    public static ItemStack skill(Material type, String name, int index) {
-        ItemStack r = new ItemStack(type);
+    public static ItemStack skill(Material type, String name, int index,int amount) {
+        ItemStack r = new ItemStack(type,amount);
         r.editMeta(itemMeta -> {
             itemMeta.displayName(Component.text(name));
             itemMeta.setCustomModelData(index);

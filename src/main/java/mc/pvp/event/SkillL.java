@@ -23,13 +23,17 @@ import static mc.pvp.Game.players;
 public class SkillL implements Listener {
 
     @EventHandler
-    public void onUse(PlayerInteractEvent e) {
+    public void onUseItem(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (!players.contains(p)) return;
         ItemStack i = e.getItem();
         if (i == null) return;
         if (!i.getItemMeta().hasCustomModelData()) return;
-        Skill.get(p, getClassID(p), i.getItemMeta().getCustomModelData()).execute();
+        int skillID = i.getItemMeta().getCustomModelData();
+        if (Skill.getCd(p, skillID) == 0) {
+            if (skillID != 0) i.setAmount(i.getAmount() - 1);
+            Skill.get(p, getClassID(p), skillID).execute();
+        } else p.sendMessage(Component.text("[S] 技能冷却中！", TextColor.color(255, 248, 161)));
     }
 
     @EventHandler
@@ -39,6 +43,7 @@ public class SkillL implements Listener {
         if (dealt.getScoreboardTags().contains("MikeSkill1")) {
             dealt.sendTitlePart(TitlePart.TITLE, Component.text(" "));
             dealt.sendTitlePart(TitlePart.SUBTITLE, Component.text("致残打击", TextColor.color(255, 0, 19), TextDecoration.BOLD));
+            dealt.removeScoreboardTag("MikeSkill1");
             taken.spawnParticle(Particle.SWEEP_ATTACK, taken.getLocation(), 10);
             taken.sendMessage(Component.text("[S] %s对你使用了致残打击！".formatted(dealt.getName()), TextColor.color(255, 248, 161)));
             taken.damage(5);
@@ -50,7 +55,7 @@ public class SkillL implements Listener {
     }
 
 
-    private void damage(Player p, double n) {
+    private void magicDamage(Player p, double n) {
         if (n <= 0) return;
         p.setHealth(p.getHealth() - n);
         if (n > p.getHealth()) {

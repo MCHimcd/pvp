@@ -2,6 +2,7 @@ package mc.pvp.event;
 
 import mc.pvp.PVP;
 import mc.pvp.Game;
+import mc.pvp.util.Skill;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,16 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import static mc.pvp.Game.*;
 
 public class GameL implements Listener {
-    @EventHandler
-    public void onUseItem(PlayerInteractEvent e) {
-        ItemStack i = e.getItem();
-        if (i == null) return;
-        if (!i.getItemMeta().hasCustomModelData()) return;
-        int item = i.getItemMeta().getCustomModelData();
-        switch (item) {
-
-        }
-    }
 
     @EventHandler
     public void onBreakBeacon(BlockBreakEvent e) {
@@ -49,7 +40,7 @@ public class GameL implements Listener {
     public void onLeave(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         players.remove(p);
-        TIME.removePlayer(p);
+        time.removePlayer(p);
     }
 
     @EventHandler

@@ -5,10 +5,12 @@ import mc.pvp.event.GameL;
 import mc.pvp.event.MainL;
 import mc.pvp.event.MenuL;
 import mc.pvp.event.SkillL;
+import mc.pvp.util.Timer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +36,7 @@ public class PVP extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         l = getLogger();
+        time = Bukkit.getBossBar(NamespacedKey.minecraft("time"));
         //命令
         Objects.requireNonNull(getCommand("start")).setExecutor(new Start());
         //事件监听
@@ -53,8 +56,9 @@ public class PVP extends JavaPlugin {
                 new String[]{"death", "§7<死亡数>"},
                 new String[]{"health", "§c<❤>"},
                 new String[]{"class_id", ""},
-                new String[]{"cd1",""},
-                new String[]{"cd2",""}
+                new String[]{"cd1", ""},
+                new String[]{"cd2", ""},
+                new String[]{"system", ""}
         }) {
             if (mainScoreboard.getObjective(obj[0]) == null)
                 mainScoreboard.registerNewObjective(obj[0], Criteria.DUMMY, Component.text(obj[1]));
@@ -73,29 +77,7 @@ public class PVP extends JavaPlugin {
             defenders.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
         } else defenders = mainScoreboard.getTeam("D");
         //tick
-        timer = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (choosing && players.stream().allMatch(player -> player.getScoreboardTags().contains("ready")))
-                    start();
-                if (!players.isEmpty()) {
-                    if (players.stream().filter(player -> PVP.attackers.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR))
-                        endD();
-                    else if (players.stream().filter(player -> PVP.defenders.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR))
-                        endA();
-                    final double max_time = 3600;
-                    int game_time = (int) (TIME.getProgress() * max_time);
-                    if (game_time <= 0) {
-                        endD();
-                        return;
-                    }
-                    if (game_time < max_time / 2) TIME.setColor(BarColor.YELLOW);
-                    if (game_time < max_time / 4) TIME.setColor(BarColor.RED);
-                    TIME.setTitle("§6剩余时间：§e%d".formatted(game_time / 20));
-                    TIME.setProgress((game_time - 1) / max_time);
-                }
-            }
-        };
+        timer = new Timer();
         timer.runTaskTimer(this, 0, 1);
     }
 }

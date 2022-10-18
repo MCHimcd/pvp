@@ -9,7 +9,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -25,7 +24,8 @@ import java.util.*;
 import static mc.pvp.util.EquipmentHelper.*;
 
 public class Game {
-    public static final BossBar TIME = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
+    public static  BossBar time ;
+    public static Score gameTime;
     public static final WorldBorder WORLD_BORDER = Bukkit.getWorlds().get(0).getWorldBorder();
     public final static World WORLD = Bukkit.getWorlds().get(0);
     public final static Location HUB = new Location(WORLD, 0, -60, 0);
@@ -54,7 +54,7 @@ public class Game {
                 .filter(player -> PVP.defenders.hasPlayer(player))
                 .forEach(player -> player.teleport(beacon.clone().add(0, 1, 0)));
         players.forEach(player -> {
-            TIME.addPlayer(player);
+            time.addPlayer(player);
             player.setGameMode(GameMode.SURVIVAL);
             playerInit(player);
         });
@@ -92,9 +92,10 @@ public class Game {
         beacon = new Location(WORLD, 1000, 0, 1000);
         players = new ArrayList<>();
         chosen_class = new ArrayList<>();
-        TIME.removeAll();
-        TIME.setColor(BarColor.GREEN);
-        TIME.setProgress(1);
+        time.removeAll();
+        time.setColor(BarColor.GREEN);
+        time.setProgress(1);
+        gameTime.resetScore();
         WORLD_BORDER.reset();
     }
 
@@ -181,8 +182,8 @@ public class Game {
 
                 );
                 items.add(weapon(Material.IRON_SWORD, 7, -2.4, "§b迈克的宝剑"));
-                items.add(skill(Material.ARROW, "§b肾上腺素", 1));
-                items.add(skill(Material.ARROW, "§c致残打击", 2));
+                items.add(skill(Material.ARROW, "§b肾上腺素", 1,3));
+                items.add(skill(Material.ARROW, "§c致残打击", 2,3));
             }
             /*
             防守
@@ -203,8 +204,8 @@ public class Game {
                         }})
 
                 );
-                items.add(weapon(Material.IRON_SWORD, 7, -2.4, "§4史瑞克的断剑", null, null, 1));
-                items.add(skill(Material.AMETHYST_SHARD, "§b原能修复", 2));
+                items.add(weapon(Material.IRON_SWORD, 7, -2.4, "§4史瑞克的断剑", null, null, true));
+                items.add(skill(Material.AMETHYST_SHARD, "§b原能修复", 1,3));
             }
         }
         items.forEach(item -> {

@@ -28,7 +28,6 @@ public class IntroItem {
             进攻方
              */
             case 10000001 -> {
-                // 2022.10.1
                 item.setType(Material.IRON_SWORD);
                 item.editMeta(itemMeta -> {
                     itemMeta.displayName(Component.text("迈克", TextColor.color(255, 0, 19)));

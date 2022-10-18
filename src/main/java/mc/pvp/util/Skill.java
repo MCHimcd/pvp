@@ -3,6 +3,7 @@ package mc.pvp.util;
 import mc.pvp.PVP;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -27,8 +28,8 @@ public abstract class Skill {
                     @Override
                     public void execute() {
                         p.addPotionEffects(new ArrayList<>() {{
-                            add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5, 0, false, false));
-                            add(new PotionEffect(PotionEffectType.SPEED, 5, 0, false, false));
+                            add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 100, 0, false, false));
+                            add(new PotionEffect(PotionEffectType.SPEED, 100, 0, false, false));
                         }});
                         setCd(p, 1, 15);
                     }
@@ -36,9 +37,9 @@ public abstract class Skill {
                 else if (skillId == 2) return new Skill() {
                     @Override
                     public void execute() {
-                        p.removeScoreboardTag("MikeSkill1");
                         p.addScoreboardTag("MikeSkill1");
                         p.spawnParticle(Particle.FLAME, p.getLocation(), 100);
+                        setCd(p, 2, 15);
                     }
                 };
                 else return EMPTY;
@@ -48,7 +49,13 @@ public abstract class Skill {
              */
             //史瑞克
             case 20000001 -> {
-                if (skillId == 1) return new Skill() {
+                if (skillId == 0) return new Skill() {
+                    @Override
+                    public void execute() {
+
+                    }
+                };
+                else if (skillId == 1) return new Skill() {
                     @Override
                     public void execute() {
 
@@ -66,8 +73,12 @@ public abstract class Skill {
         }
     }
 
-    public static void setCd(Player p, int id, int num) {
-        Objects.requireNonNull(PVP.mainScoreboard.getObjective("cd%d".formatted(id))).getScore(p).setScore(num);
+    public static void setCd(Player p, int id, int sec) {
+        Objects.requireNonNull(PVP.mainScoreboard.getObjective("cd%d".formatted(id))).getScore(p).setScore(sec * 20);
+    }
+
+    public static int getCd(Player p, int id) {
+        return Objects.requireNonNull(PVP.mainScoreboard.getObjective("cd%d".formatted(id))).getScore(p).getScore();
     }
 
     public abstract void execute();
