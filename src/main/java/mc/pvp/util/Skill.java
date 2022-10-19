@@ -3,12 +3,13 @@ package mc.pvp.util;
 import mc.pvp.PVP;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static mc.pvp.PVP.defenders;
 
 public abstract class Skill {
     private final static Skill EMPTY = new Skill() {
@@ -58,7 +59,9 @@ public abstract class Skill {
                 else if (skillId == 1) return new Skill() {
                     @Override
                     public void execute() {
-
+                        p.getWorld().getNearbyEntitiesByType(Player.class, p.getLocation(), 5)
+                                .stream().filter(player -> defenders.hasPlayer(player))
+                                .forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2, 255, false, false)));
                     }
                 };
                 else return EMPTY;

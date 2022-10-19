@@ -13,14 +13,15 @@ import static mc.pvp.PVP.mainScoreboard;
 public class Timer extends BukkitRunnable {
     @Override
     public void run() {
-        if (choosing && players.stream().allMatch(player -> player.getScoreboardTags().contains("ready")))
-            start();
+        if (choosing && players.stream().allMatch(player -> player.getScoreboardTags().contains("ready"))) start();
         if (!players.isEmpty()) {
-            if (players.stream().filter(player -> PVP.attackers.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR))
+            if (players.stream().filter(player -> PVP.attackers.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR)) {
                 endD();
-            else if (players.stream().filter(player -> PVP.defenders.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR))
+                return;
+            } else if (players.stream().filter(player -> PVP.defenders.hasPlayer(player)).allMatch(player -> player.getGameMode() == GameMode.SPECTATOR)) {
                 endA();
-            gameTime = Objects.requireNonNull(mainScoreboard.getObjective("system")).getScore("#time");
+                return;
+            }
             int seconds = gameTime.getScore() / 20;
             if (seconds > 180) return;
             double max_seconds = 180;

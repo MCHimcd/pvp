@@ -50,6 +50,7 @@ public class PVP extends JavaPlugin {
             pm.registerEvents(l, this);
         //计分板
         mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Objects.requireNonNull(mainScoreboard.getObjective("system")).getScore("#time");
         for (String[] obj : new String[][]{
                 new String[]{"money", "§6<金币>"},
                 new String[]{"kill_player", "§7<杀敌数>"},
